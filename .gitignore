@@ -1,0 +1,13 @@
+# Python junk
+__pycache__/
+*.pyc
+
+# Anaconda/Env junk
+.conda/
+env/
+venv/
+
+# Jupyter Checkpoints
+.ipynb_checkpoints/
+
+saveAiInfo.txt
