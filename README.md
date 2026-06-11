@@ -1,1 +1,3 @@
-Pythin course in phase -2
+Python course in phase -2
+Andrei course
+Scripting...
