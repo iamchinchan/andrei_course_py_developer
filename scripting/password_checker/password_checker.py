@@ -18,3 +18,5 @@ def pass_to_hash(password):
 
 
 print(pass_to_hash("password123"))
+print(pass_to_hash("123"))
+# print(pass_to_hash(123))
