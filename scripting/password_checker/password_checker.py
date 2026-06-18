@@ -28,4 +28,5 @@ def check_if_pawned(password):
     return 0
 
 
-print(f"Password has been pawned: {check_if_pawned("password123")} many times")
+if __name__ == "__main__":
+    print(f"Password has been pawned: {check_if_pawned("fakepassword123")} many times")
