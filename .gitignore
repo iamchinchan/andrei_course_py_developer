@@ -11,3 +11,7 @@ venv/
 .ipynb_checkpoints/
 
 saveAiInfo.txt
+
+.env
+.env.*
+*.env
