@@ -1,3 +1,10 @@
 body {
-    background-color: purple;
+    background-color: #b15656;
+    color: white;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+a {
+    color: #4da6ff;
 }

@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 
 app = Flask(__name__)
 
@@ -8,6 +8,21 @@ def home():
     return render_template("index.html")
 
 
+@app.route("/blog")
+def blog():
+    return "This is a simple blog!"
+
+
+@app.route("/favicon.ico")
+def favicon():
+    return "😀"
+
+
 @app.route("/about")
 def about():
-    return "This is a simple web server built with Flask."
+    return render_template("about.html")
+
+
+@app.route("/company/about")
+def Companyabout():
+    return render_template("about.html")
