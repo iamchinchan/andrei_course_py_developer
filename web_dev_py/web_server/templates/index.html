@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/style.css" ,type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <title>My Portfolio</title>
 </head>
 
@@ -17,7 +18,7 @@
     <p><a href="/company/about">Go to About Page (Proper HTML)</a></p>
     <p><a href="/blog">Go to Blog Page (String only)</a></p>
     <p><a href="about.html">Broken Link (Will cause 404 error)</a></p>
-    <script src="static/script.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 
 </html>
