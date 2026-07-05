@@ -8,6 +8,11 @@ def home():
     return render_template("index.html")
 
 
+@app.route("/<username>/<int:post_id>")
+def post(username=None, post_id=None):
+    return render_template("index.html", name=username, post_id=post_id)
+
+
 @app.route("/blog")
 def blog():
     return "This is a simple blog!"
