@@ -7,3 +7,4 @@ automations
 ml
 flask server and url parameters 
 portfolio using flask
+jinja
