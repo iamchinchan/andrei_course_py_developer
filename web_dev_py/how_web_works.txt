@@ -61,3 +61,6 @@ Authentication: NextAuth, Firebase Auth, or Clerk (Secure login/signup).
 CI/CD: Automated testing and deployment whenever you push new code to GitHub.
 
 The Flow: User clicks button (Frontend) ➔ API Request sent ➔ Server processes it (Backend) ➔ Reads/Writes to Database ➔ Server sends data back ➔ Screen updates (Frontend).
+
+
+MIME stands for Multipurpose Internet Mail Extensions
