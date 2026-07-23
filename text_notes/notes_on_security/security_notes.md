@@ -399,6 +399,3 @@ Let's trace exactly what happens when you log into a modern app:
 
 If any single one of these (say, JWT internals, or how bcrypt actually salts passwords, or OAuth2 flows) still feels fuzzy, tell me which one and I'll zoom in even deeper on just that piece with more examples.
 
-
-
-cookies and sessions:
