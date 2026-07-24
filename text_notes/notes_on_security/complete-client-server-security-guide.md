@@ -277,10 +277,88 @@ Simply flooding the target with massive amounts of raw traffic (e.g., UDP floods
 - **HTTP Flood** — sends seemingly-normal, legitimate-looking HTTP requests, but in overwhelming volume, specifically targeting expensive operations (like a search function that hits the database hard) to exhaust server resources with much less raw bandwidth needed
 **Defense:** rate limiting per IP/user, WAF rules detecting abnormal request patterns, CAPTCHA challenges for suspicious traffic
 
+WAF = Web Application Firewall
+
+A dedicated program/service that inspects incoming HTTP requests (before they reach your actual app code) and blocks ones matching known attack patterns — SQL injection attempts, XSS payloads, abnormal request floods, etc. Real examples: Cloudflare WAF, AWS WAF.
+
 ## Type 4: DNS Amplification
 Attacker sends small requests to DNS servers with a SPOOFED source address (pretending to be the victim), and the DNS server sends a much LARGER response to the victim — amplifying a small attack into a massive flood aimed at someone else.
 **Defense:** properly configured DNS servers refusing to be used this way (this is mostly an internet-infrastructure-level fix, not something individual app developers control directly)
 
+Let's slow this way down with a real-world analogy first, then the actual technical steps.
+
+## The analogy: prank phone calls redirected to someone else
+
+Imagine you could call a business (say, a pizza place with a huge menu) and say **"Hi, this is [victim's phone number], please read me your ENTIRE menu with prices"** — but you fake your caller ID to show the victim's number instead of your own. The pizza place doesn't know it's not really the victim calling — it just sees that number and calls THEM back, reading out this massive, long menu... to someone who never asked for it, over and over, from hundreds of different pizza places at once, all "confirming" with the same faked number.
+
+That's the entire attack. Let's map this exactly onto the real technical version.
+
+## Piece 1: What's a "small request, big response" in DNS specifically?
+
+Normally, DNS just answers "what's the IP for google.com?" — a tiny question, tiny answer. But DNS also supports much bigger types of requests, like **"give me EVERY piece of DNS record information you have for this domain"** — this can return a genuinely large response (much bigger than the tiny request that asked for it).
+
+```
+Attacker sends: "Hey DNS server, give me ALL records for this domain" 
+                (a small request — maybe 60 bytes)
+
+DNS server replies: [a huge block of data — maybe 3000+ bytes]
+```
+
+**This size difference — small ask, huge answer — is called the "amplification factor."** A 60-byte request producing a 3000-byte response is roughly a 50x amplification.
+
+## Piece 2: The "spoofed source address" — this is the actual trick
+
+Every network request has a "return address" baked in — normally, this is genuinely YOUR device's real address, so the response comes back to YOU. **IP spoofing means the attacker fakes this return address, writing the VICTIM's address instead of their own**, before sending the request.
+
+```
+Normal request (honest):
+   FROM: attacker's real IP
+   TO: DNS server
+   "Give me all records for X"
+   → response correctly goes back to attacker
+
+SPOOFED request (the attack):
+   FROM: VICTIM's IP (faked — attacker just wrote this in, 
+         didn't actually come from the victim)
+   TO: DNS server
+   "Give me all records for X"
+   → DNS server has NO way to know this is fake — it just sees 
+     "return address: victim" and dutifully sends the huge 
+     response THERE instead
+```
+
+**The DNS server isn't hacked or broken here — it's doing exactly what it's designed to do (answer questions, send replies to whoever asked). It just has no way to verify the "return address" is genuine**, because that's a fundamental limitation of how this type of network communication works (similar in spirit to how anyone can write ANY return address on a physical mailed envelope — the postal service doesn't verify it either).
+
+## Piece 3: Putting the whole attack together, step by step
+
+```
+1. Attacker finds hundreds/thousands of open, public DNS servers 
+   across the internet (many exist, that's normal/intended)
+
+2. Attacker sends a tiny request to EACH of these DNS servers, 
+   asking a "big response" type question, with the SOURCE 
+   ADDRESS FAKED to be the victim's IP, on ALL of them
+
+3. Every single one of those DNS servers — completely unaware 
+   anything is wrong — sends its large response back to... 
+   the victim, not the attacker
+
+4. The victim's server/network gets absolutely flooded with 
+   these large, unwanted responses, from hundreds of different, 
+   completely legitimate DNS servers, all "replying" to a 
+   request the victim never actually sent
+
+5. The victim's network bandwidth gets overwhelmed by this flood 
+   of incoming "replies" — this is the actual denial-of-service
+```
+
+## Why this is such an efficient attack for the attacker specifically
+
+The attacker only had to send small, cheap requests (low bandwidth cost to THEM), but the victim receives massively amplified traffic (high bandwidth cost, at scale, TO the victim) — and it's coming from many different real, legitimate DNS servers, which also makes it harder to simply "block one bad sender," since the traffic is technically coming from many different innocent, real DNS servers who were tricked into participating.
+
+## The one-paragraph summary
+
+**The attacker never talks to the victim directly at all — they trick a bunch of innocent DNS servers into unknowingly attacking the victim FOR them, by lying about who's asking the question (faking the return address) and specifically asking a type of question that gets a huge answer back — so a small amount of effort from the attacker turns into a massive flood of unwanted traffic hitting someone who never even received the attacker's original request.**
 ---
 
 # PART 4: Phishing — The Human-Layer Attack (Technology Can't Fully Stop This Alone)
@@ -291,6 +369,85 @@ We covered this in depth earlier (fake login pages vs. OAuth consent phishing). 
 - User education (outside pure code, but real companies invest in this — security awareness training, phishing simulation tests)
 
 ---
+Good — this deserves a proper walkthrough, because it's genuinely clever and worth actually understanding, not just accepting as a buzzword.
+
+## First, let's re-confirm the problem passkeys are solving
+
+Regular password + even 2FA (OTP codes) can STILL be phished, because you — the human — can't reliably tell a fake site from a real one, and whatever you type (password, OTP code) can just be typed into the fake site and immediately relayed by the attacker to the real site, in real time.
+
+```
+Real-time phishing relay attack (this defeats even normal 2FA):
+1. You visit fake-bank-login.com (looks identical to real bank)
+2. You type your password → attacker's server immediately 
+   forwards it to the REAL bank site
+3. Real bank sends you an OTP code (to your phone) → you type 
+   THAT into the fake site too → attacker immediately forwards 
+   THAT to the real bank as well
+4. Attacker is now logged in as you, in real time, using your 
+   own genuine credentials that YOU typed, just relayed through them
+```
+
+**This is the exact hole passkeys are built to close** — notice the core problem: everything you typed was just DATA, and data can always be copied/relayed by a middleman, no matter how "secret" it looks to you.
+
+## The key insight: a passkey isn't something you TYPE — it's something your DEVICE does, tied to a specific domain
+
+Instead of you typing a password/code that COULD be copied, your device performs a genuine cryptographic action — signing a challenge — that is mathematically bound to the exact domain you're on. Let's walk through the setup, then the login, step by step.
+
+## Setup (creating a passkey — done once, with the REAL site)
+
+```
+1. You create an account on realbank.com
+2. Your device (phone/laptop) generates a KEY PAIR, specifically 
+   for this exact domain:
+   - Private key: stays LOCKED inside your device's secure 
+     hardware chip, never leaves, ever
+   - Public key: sent to realbank.com's server, stored there
+
+3. Critically: your device ITSELF records "this key pair is for 
+   realbank.com" — this binding is baked in at the OS/browser 
+   level, not something you can be tricked about
+```
+
+## Login attempt on the REAL site — this works perfectly
+
+```
+1. You go to realbank.com, click login
+2. realbank.com's server sends a random CHALLENGE (some random data)
+3. Your BROWSER/OS checks: "is this domain the SAME one I 
+   registered this passkey for?" → YES, realbank.com matches
+4. Your device signs the challenge using the PRIVATE key 
+   (never leaves your device) — exactly the digital signature 
+   process from our earlier deep-dive
+5. Sends the signature back → realbank.com verifies it using 
+   the stored PUBLIC key → matches → you're logged in
+```
+
+## Now — login attempt on a FAKE site (this is where it becomes obvious why it's phishing-proof)
+
+```
+1. You get tricked, visit fake-realbank.com (looks identical)
+2. fake-realbank.com's server sends a challenge, trying to 
+   trigger your passkey
+3. YOUR BROWSER/OS checks: "is this domain the SAME one I 
+   registered this passkey for?"
+   → NO — "fake-realbank.com" ≠ "realbank.com" 
+   → THESE ARE DIFFERENT STRINGS, even if the page LOOKS identical
+4. Your device REFUSES to even attempt signing anything for 
+   this domain — no challenge gets signed, no response is 
+   ever generated at all
+```
+
+## This directly answers your exact question: "can't the attacker just relay it, like before?"
+
+**No — and here's precisely why, mechanically:** in the password/OTP case, the SECRET (password, OTP code) was just data typed by a human, who can't verify the domain — so it could be copied and relayed anywhere. **With a passkey, there IS no "secret data" for you to type or for an attacker to intercept and relay at all.** The actual cryptographic proof (the signature) is generated by YOUR DEVICE, automatically, and your device's own software does the domain check — not you, visually, looking at a URL. Even if the attacker perfectly copies the fake page's visual appearance, they cannot make your device's OS/browser believe `fake-realbank.com` IS `realbank.com` — that check happens at the software level, comparing exact domain strings, not "does this look right to a human."
+
+## Directly addressing "so if they get my password, can they log in without 2FA using passkeys?"
+
+If a service uses **passkeys as the ONLY login method** (no password at all), there's no password to steal in the first place — login is 100% "does your device successfully sign this domain-specific challenge," and a fake domain simply can never get that signature. If a service still ALSO offers password login as a fallback/alternative option, then yes, that password-based path could still be phished separately — passkeys don't retroactively protect a different, still-existing password login method; they're phishing-resistant specifically for their OWN login flow, not a blanket shield over every other method the site might still allow.
+
+## The one-paragraph summary
+
+**Passkeys work because the "proof" isn't something you type and could be copied/relayed by an attacker — it's a cryptographic signature your OWN device generates, and your device (not you, visually) checks that the domain asking for this signature exactly matches the domain the passkey was originally created for. A fake lookalike domain is a DIFFERENT string than the real one, so your device simply refuses to sign anything for it — there's no human judgment call to fool, and no secret data being typed that could be intercepted, which is exactly what made phishing possible against passwords and OTP codes in the first place.**
 
 # PART 5: The Complete "Build It Like Top Companies" Security Checklist, By Phase
 
