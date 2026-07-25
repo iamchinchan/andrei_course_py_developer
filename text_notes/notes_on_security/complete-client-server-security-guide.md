@@ -468,6 +468,55 @@ If a service uses **passkeys as the ONLY login method** (no password at all), th
 - [ ] HSTS enabled
 - [ ] Certificate pinning for mobile apps specifically (extra hardening beyond standard TLS)
 
+Three separate things — let's take them one at a time.
+
+## HSTS — how it's different from just "using HTTPS"
+
+**The gap HSTS closes:** even if a site fully supports HTTPS, there's a small window of vulnerability the FIRST time you visit — if you type `example.com` (no `https://`) or click an old `http://` link, your browser's very first request goes out over **plain, unencrypted HTTP by default**, and only gets redirected to HTTPS *after* that first request. An attacker sitting on the network (like public WiFi) can intercept that brief unencrypted moment and either read it or silently keep you on a fake HTTP version forever (a "downgrade attack").
+
+**What HSTS actually is:** a special response header the server sends:
+```
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+```
+This tells your BROWSER: *"Remember this — for the next year, NEVER attempt plain HTTP for this domain again, ever, even if the user types it. Automatically rewrite every request to HTTPS before it even leaves the browser, at the browser level, before any network request is sent at all."*
+
+```
+WITHOUT HSTS:
+You type "example.com" → browser tries HTTP first → 
+server replies "redirect to HTTPS" → NOW switches to HTTPS
+   ↑ that first HTTP moment is exposed/interceptable
+
+WITH HSTS (after your first successful visit):
+You type "example.com" → browser INTERNALLY already knows, 
+from memory, to go straight to HTTPS → never sends 
+plain HTTP at all, not even once
+```
+
+**Crisp distinction:** HTTPS is the encryption itself; HSTS is a rule telling the browser "never even attempt the unencrypted version again," closing the one small gap plain HTTPS alone leaves open on first contact.
+
+## Certificate Pinning (mobile apps) — going a step beyond standard TLS
+
+**The gap this closes:** normally, your browser/app trusts ANY certificate signed by ANY Certificate Authority (CA) in its trust store — remember, there are many CAs. This is a real, if rare, risk: if even ONE trusted CA anywhere in the world is compromised or tricked into issuing a fraudulent certificate for your domain, an attacker COULD present that fraudulent-but-technically-"validly-signed" certificate, and a normal app would accept it.
+
+**What pinning does:** the app is hardcoded (at build time) to only trust ONE SPECIFIC certificate (or public key) for your server — not "any CA-signed cert," but "THIS exact one, and nothing else."
+
+```
+Normal TLS: "Is this certificate signed by ANY CA I trust?" → 
+            accepts many possible valid certificates
+
+Pinned TLS: "Is this certificate EXACTLY the one specific 
+            certificate/key I was built to expect?" → 
+            rejects EVERYTHING else, even a technically 
+            validly-signed certificate from a different, 
+            legitimate CA
+```
+
+**Why mobile apps specifically:** a mobile app is a fixed, distributed piece of software (unlike a browser, which needs to trust millions of different websites) — so it's practical to hardcode "trust only THIS one server's certificate," since the app only ever needs to talk to its own company's backend, not arbitrary websites.
+
+## SSN
+
+**Social Security Number** — the US government-issued personal identification number (format: XXX-XX-XXXX) used for tax records, employment, credit, and identity verification. It's treated as extremely sensitive data precisely because so many financial/legal systems use it as an identity proof — if leaked, it enables identity theft (opening credit lines, filing fraudulent tax returns, etc. in your name). This is exactly why our security checklist flagged it as needing extra encryption at rest — it's one of the highest-value, most-protected pieces of personal data in breaches specifically because of how much real-world damage a leaked one can cause.
+
 ## Phase 4: Data at Rest
 - [ ] Database encryption at rest (protects data if physical storage/backups are stolen)
 - [ ] Sensitive fields (SSNs, payment info) encrypted with strong symmetric encryption (AES-256), not just relying on database-level encryption alone
@@ -507,3 +556,5 @@ If a service uses **passkeys as the ONLY login method** (no password at all), th
 3. **Detecting and responding fast** when something does go wrong, rather than assuming it never will
 
 This is precisely why every technique in this document — hashing, encryption, token rotation, WAFs, rate limiting, parameterized queries — exists: not as one magic fix, but as **layers**, so that even if an attacker gets through one, several more stand between them and real damage. That layered, "assume something will eventually fail" mindset — not any single tool — is genuinely what separates top-tier security from average security.
+
+
