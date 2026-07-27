@@ -10,4 +10,4 @@ portfolio using flask
 jinja
 automation and testing: selenium
 Overall view on security 
-paths
+paths 
