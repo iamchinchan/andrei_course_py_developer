@@ -74,3 +74,113 @@ print(x1 == r"'a'-'b'")   # → True   (genuinely identical content)
 ## The one-line rule
 
 **`print()` shows you what a string LOOKS like when read; `repr()` shows you what you'd need to TYPE in code to recreate that exact string** — and Python's `repr()` intelligently picks whichever quote character (`'` or `"`) won't conflict with what's already inside the string, which is exactly why your `repr(x1)` output got wrapped in double quotes even though `x1` was originally created using double quotes too.
+
+Yes, they are completely different concepts in Python.
+
+Here is the exact difference:
+
+### 1. `r` (Raw String Prefix)
+
+* **What it is:** A marker placed immediately before a string literal (e.g., `r"text"`).
+* **What it does:** It tells Python to treat all backslashes (`\`) as literal characters instead of escape characters (like `\n` for newline or `\t` for tab).
+* **When to use it:** When writing regular expressions, Windows file paths, or HTML/CSS code where backslashes are common.
+* **Example:**
+```python
+path = r"C:\new_folder\test.txt" 
+# Python reads the exact text. It does not treat \n as a newline.
+
+```
+
+
+
+### 2. `repr()` (Representation Function)
+
+* **What it is:** A built-in Python function (e.g., `repr(object)`).
+* **What it does:** It takes an existing object and returns a string that represents how that object looks to the Python interpreter under the hood. It exposes exactly what is inside, including hidden escape characters or quotes.
+* **When to use it:** For debugging, logging, or checking the strict data type and contents of a variable.
+* **Example:**
+```python
+text = "Line1\nLine2"
+print(repr(text)) 
+# Output: 'Line1\nLine2' (It exposes the hidden \n instead of actually breaking the line).
+
+```
+
+
+
+**In short:** `r` is used when you *create* a string to stop Python from processing backslashes. `repr()` is an action you take on an *existing* variable to inspect its underlying code format.
+
+### The Core Difference
+
+* **`r`** only works on **strings**, and only at the exact moment you type them.
+* **`repr()`** works on **any existing variable** (like dates, lists, or custom objects) to reveal its exact data type and structure.
+
+### The Example
+
+Let's look at a Python Date object.
+
+```python
+import datetime
+today = datetime.date(2026, 7, 27)
+
+# Standard print hides the code structure
+print(today) 
+# Output: 2026-07-27 
+
+# repr() reveals exactly what the variable is under the hood
+print(repr(today)) 
+# Output: datetime.date(2026, 7, 27) 
+
+```
+
+**Why `r` cannot do this:**
+You cannot use `r` here at all (`r today` is an error). `r` is strictly a text-formatting tool for quotes. `repr()` is an interrogation tool that looks inside a live, existing piece of data and shows you the raw code used to build it.
+
+Yes, you are exactly right. The two dunder (double underscore) methods used to control how an object is displayed are `__str__` and `__repr__`.
+
+Here is the exact difference, broken down crisply:
+
+### 1. `__str__` (The Human-Readable Version)
+
+* **What it does:** Returns a clean, easy-to-read string meant for the end-user.
+* **When it is triggered:** When you use `print(object)` or `str(object)`.
+* **Goal:** To look nice and make sense to a normal person (e.g., a customer viewing a webpage).
+
+### 2. `__repr__` (The Developer/Code Version)
+
+* **What it does:** Returns the strict, unambiguous "definition" of the object.
+* **When it is triggered:** When you use `repr(object)` or when you inspect a variable directly in a Python terminal.
+* **Goal:** To help you debug. It shows exactly how the object is structured under the hood. Ideally, the string returned by `__repr__` should look exactly like the Python code you would type to create that object in the first place.
+
+---
+
+### The Crisp Example
+
+Here is how both methods operate on a single object.
+
+```python
+class StoreItem:
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price
+
+    # The readable version
+    def __str__(self):
+        return f"Item: {self.name} | Price: ${self.price}"
+
+    # The strict code definition version
+    def __repr__(self):
+        return f"StoreItem('{self.name}', {self.price})"
+
+# Create the object
+shirt = StoreItem("Polo", 500)
+
+# Triggering __str__ (What the customer sees)
+print(shirt) 
+# Output: Item: Polo | Price: $500
+
+# Triggering __repr__ (What you, the architect, see)
+print(repr(shirt)) 
+# Output: StoreItem('Polo', 500)
+
+```
