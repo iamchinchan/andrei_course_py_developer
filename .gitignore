@@ -1,17 +1,81 @@
-# Python junk
-__pycache__/
-*.pyc
-
-# Anaconda/Env junk
-.conda/
-env/
-venv/
-
-# Jupyter Checkpoints
-.ipynb_checkpoints/
-
-saveAiInfo.txt
-
+# ========================
+# SECRETS (CRITICAL)
+# ========================
 .env
 .env.*
 *.env
+*.pem
+*.key
+*secret*
+saveAiInfo.txt
+
+# ========================
+# AI EXTENSIONS & AGENTS
+# ========================
+.continue/
+.continueignore
+.kilo/
+kilo.jsonc
+.cursor/
+.cursorrules
+
+# ========================
+# LLAMA CODER / LOCAL AI CACHE
+# ========================
+.llamacoder/
+.twinny/
+.fused/
+
+
+# ========================
+# PYTHON & ENVIRONMENTS
+# ========================
+__pycache__/
+*.py[cod]
+*$py.class
+.conda/
+env/
+venv/
+.venv/
+Pipfile.lock
+
+# ========================
+# JUPYTER & DATA SCIENCE
+# ========================
+.ipynb_checkpoints/
+*.csv
+*.tsv
+*.dat
+data/
+
+# ========================
+# MACHINE LEARNING MODELS
+# ========================
+*.pt
+*.pth
+*.h5
+*.safetensors
+*.onnx
+models/
+
+# ========================
+# WEB DEV (FLASK/NODEJS)
+# ========================
+instance/
+node_modules/
+dist/
+build/
+.next/
+
+# ========================
+# DATABASES & LOGS
+# ========================
+*.sqlite3
+*.db
+*.log
+
+# ========================
+# OS JUNK
+# ========================
+.DS_Store
+Thumbs.db
