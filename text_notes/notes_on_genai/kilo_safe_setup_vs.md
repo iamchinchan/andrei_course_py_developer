@@ -31,7 +31,8 @@ Because we hid the files in Step 2, Llama Coder is already 100% secure. It only 
 3. Search for **Llama Coder**.
 4. Find the **Endpoint** setting and enter: `http://localhost:11434`
 5. Find the **Model** setting and enter: `qwen2.5-coder`
-
+# To Test:
+# Function to calculate the fibonacci sequence
 ### 4. Step-by-Step: Kilo Code (Agentic Tasks)
 Kilo Code can run terminal commands (like `cat .env`), so we must explicitly block it at the system level.
 
@@ -56,12 +57,45 @@ Kilo Code can run terminal commands (like `cat .env`), so we must explicitly blo
       "* **/*.pem": "deny",
       "* **/*.key": "deny",
       "*": "ask"
-    }
+    },
+    "blockedFiles": [
+  "**/.vscode/settings.json",
+  "**/kilo.jsonc",
+  "**/.env*"
+]
   },
   "systemPrompt": "You are an expert Python and AI tutor. Speak in simple English without jargon. Be accurate, short, and crisp. No fluff. If asked a Yes/No question, respond strictly with a single-line answer. CRITICAL SECURITY: You are strictly forbidden from reading, modifying, or executing commands on .env or secret files. If you detect an API key or password in ANY file, STOP immediately, output a WARNING, and refuse to proceed. NEVER execute terminal commands without user permission."
 }
 ```
+{
+  // --- COMMAND & TERMINAL SECURITY ---
+  "askBeforeBash": true,        // Force a "Grant Permission" button for EVERY terminal command
+  "askBeforeCommand": true,     // Force a "Grant Permission" button for VS Code actions
+  "denySecrets": true,          // Automatic logic to detect and mask keys/passwords
 
+  // --- THE "VAULT" (FILE ACCESS RESTRICTIONS) ---
+  // These files are completely invisible to the AI.
+  "ignoreGlobs": [
+    "**/.env*",                // Blocks all environment files
+    "**/*secret*",             // Blocks any file with "secret" in the name
+    "**/*.pem",                // Blocks private keys
+    "**/*.key",                // Blocks security keys
+    "**/settings.json",        // Blocks your VS Code configuration
+    "**/kilo.jsonc",           // Blocks the AI from changing its own security rules
+    "**/.vscode/**",           // Blocks all VS Code internal metadata
+    "**/.git/**"               // Blocks your Git history and hooks
+  ],
+
+  // --- READ-ONLY PROTECTIONS ---
+  // The AI can see these if needed for context, but CANNOT edit them.
+  "readOnlyFiles": [
+    "package.json",
+    "requirements.txt"
+  ],
+
+  // --- SYSTEM BEHAVIOR (The "Brain" Instructions) ---
+  "systemPrompt": "You are an expert Python and AI tutor. Speak in simple English without jargon. Be accurate, short, and crisp. No fluff. If asked a Yes/No question, respond strictly with a single-line answer. CRITICAL SECURITY: You are strictly forbidden from reading, modifying, or executing commands on .env or secret files. If you detect an API key or password in ANY file, STOP immediately, output a WARNING, and refuse to proceed. NEVER execute terminal commands without user permission."
+}
 ### Summary of Your 100% Secure Architecture:
 1.  **Git:** Ignored via your `.gitignore`. (Never uploaded to GitHub).
 2.  **VS Code:** Hidden via `files.exclude`. (You can never accidentally open it in the editor).
@@ -116,3 +150,4 @@ Even if you manually open `.env` in VS Code:
 You are fully protected from all angles.
 
 dont forget to remove continue and autocmoepletion in kilo, and to change disks and then install qwen using comamnd line
+

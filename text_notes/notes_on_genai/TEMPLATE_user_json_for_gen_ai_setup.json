@@ -1,0 +1,111 @@
+{
+    "files.exclude": {
+        "**/.env*": true,
+        "**/*secret*": true,
+        "**/*.pem": true,
+        "**/*.key": true
+    },
+    "[dotenv]": {
+        "editor.inlineSuggest.enabled": false
+    },
+    "[properties]": {
+        "editor.inlineSuggest.enabled": false
+    },
+    "[plaintext]": {
+        "editor.inlineSuggest.enabled": false
+    },
+    "[json-secrets]": {
+        "editor.inlineSuggest.enabled": false
+    },
+    "[php-config]": {
+        "editor.inlineSuggest.enabled": false
+    },
+    "files.associations": {
+        ".env*": "dotenv",
+        "config.yaml": "yaml",
+        "secrets.json": "json-secrets",
+        "*.pem": "pem-key",
+        "*.key": "private-key",
+        "*.crt": "certificate",
+        "*.cer": "certificate",
+        "*.p12": "certificate",
+        "*.pfx": "certificate",
+        "aws/credentials": "aws-config",
+        ".aws/config": "aws-config",
+        "wp-config.php": "php-config",
+        "*.sqlite": "sqlite",
+        "*.db": "database",
+        ".npmrc": "npm-config",
+        "id_rsa": "ssh-key",
+        "id_ed25519": "ssh-key"
+    },
+    "github.copilot.enable": {
+        "*": true,
+        "dotenv": false,
+        "yaml": false,
+        "json-secrets": false,
+        "pem-key": false,
+        "private-key": false,
+        "certificate": false,
+        "aws-config": false,
+        "php-config": false,
+        "sqlite": false,
+        "database": false,
+        "npm-config": false,
+        "ssh-key": false
+    },
+    "terminal.integrated.profiles.windows": {
+        "PowerShell": {
+            "source": "PowerShell",
+            "icon": "terminal-powershell"
+        },
+        "Command Prompt": {
+            "path": "C:\\WINDOWS\\System32\\cmd.exe",
+            "args": [],
+            "icon": "terminal-cmd"
+        },
+        "Git Bash": {
+            "path": "C:\\Program Files\\Git\\bin\\bash.exe",
+            "args": [
+                "--login",
+                "-i"
+            ]
+        }
+    },
+    "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "python-envs.terminal.autoActivationType": "shellStartup",
+    "files.autoSave": "onFocusChange",
+    "jupyter.askForKernelRestart": false,
+    "editor.formatOnSave": true,
+    "notebook.formatOnSave.enabled": true,
+    "workbench.iconTheme": "material-icon-theme",
+    "explorer.confirmDelete": false,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+    "workbench.startupEditor": "none",
+    "python.terminal.executeInFileDir": true,
+    "chat.disableAIFeatures": true,
+    "terminal.integrated.commandsToSkipShell": [
+        "kilo-code.new.agentManagerOpen",
+        "kilo-code.new.agentManager.showTerminal"
+    ],
+    "twinny.ollamaHostname": "127.0.0.1",
+    "twinny.debounceWait": 250,
+    "twinny.fileContextEnabled": true,
+    "twinny.temperature": 0,
+    "twinny.maxLines": 10,
+    "twinny.numPredictFim": 128,
+    "twinny.embeddingIgnoredGlobs": [
+        "**/.env*",
+        "**/secrets/**",
+        "**/*.pem",
+        "**/*.key",
+        "**/node_modules/**",
+        "**/.git/**",
+        "**/dist/**",
+        "**/build/**"
+    ],
+    "twinny.keepAlive": "-1",
+}
