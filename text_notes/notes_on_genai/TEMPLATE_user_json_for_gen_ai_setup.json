@@ -108,4 +108,14 @@
         "**/build/**"
     ],
     "twinny.keepAlive": "-1",
+    "kilo-code.new.agentWorkStyle": "skipped",
+    "kilo-code.new.maxCost": 0,
+    "kilo-code.new.attention.enabled": true,
+    "kilo-code.new.showTokenThroughput": true,
+    "kilo-code.new.autocomplete.enableAutoTrigger": false,
+    "kilo-code.new.autoApprove.enabled": false,
+    "kilo-code.new.agentManager.autoBranchNaming": false,
+    "kilo-code.new.browserAutomation.enabled": true,
+    "kilo-code.new.browserAutomation.useSystemChrome": false,
+    "kilo-code.new.diff.renderMarkdown": true
 }

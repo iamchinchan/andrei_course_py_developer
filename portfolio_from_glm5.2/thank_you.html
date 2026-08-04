@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You!</title>
+    <meta name="description" content="Beautiful thank you page with automated gui and perfect thank you note">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <!-- Iconify CDN -->
+    <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <!-- Glassmorphism CSS -->
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-tertiary: #0f3460;
+            --accent: #00c9ff;
+            --text-primary: #e6e6e6;
+            --text-secondary: #b1b1b1;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at bottom left, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.6);
+        }
+
+        .glow {
+            text-shadow: 0 0 15px rgba(0, 201, 255, 0.5);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+            background: -webkit-linear-gradient(left, #00c9ff, #00b3e6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(0, 201, 255, 0.2);
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .thank-you-note {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            white-space: pre-line;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: var(--text-primary);
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .thank-you-note::before {
+            content: "✨";
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 2rem;
+            opacity: 0.7;
+        }
+
+        .thank-you-note::after {
+            content: "🎉";
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 2rem;
+            opacity: 0.7;
+        }
+
+        .animated-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), #0093e6);
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .animated-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: var(--transition);
+        }
+
+        .animated-btn:hover::before {
+            left: 0;
+        }
+
+        .animated-btn:active {
+            transform: scale(0.98);
+        }
+
+        .feature-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+            margin-bottom: 40px;
+        }
+
+        .feature-item {
+            background: var(--bg-tertiary);
+            border-radius: 15px;
+            padding: 20px 30px;
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+
+        .footer {
+            margin-top: 50px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .star {
+            position: absolute;
+            background-color: var(--accent);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            opacity: 0;
+            animation: shoot 5s linear infinite;
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .interactive-elements {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .interactive-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 10px 20px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .interactive-btn:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 1.7rem;
+            }
+            
+            .glass-card {
+                padding: 30px;
+            }
+            
+            .thank-you-note {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Confetti Container -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <div class="container">
+        <div class="glass-card">
+            <h1>Thank You!</h1>
+            <h2>For Visiting My Portfolio</h2>
+            <p class="subtitle">I'm thrilled you found your way here. Let me share something special with you.</p>
+            
+            <div class="thank-you-note" id="thankYouNote">
+                Dear Visitor,
+                
+                Thank you for taking the time to explore my work and learn about my projects.
+                Your curiosity and interest mean the world to me. 
+                I hope you enjoyed seeing my creations as much as I enjoyed building them.
+                
+                This portfolio is a reflection of my passion, dedication, and growth as a developer.
+                I'm constantly learning, building, and pushing boundaries.
+                
+                Thank you for being part of this journey. I hope we can connect and collaborate 
+                in the future!
+                
+                With gratitude,
+                Your Name
+            </div>
+            
+            <div class="interactive-elements">
+                <button class="animated-btn" data-action="projects">Explore My Projects</button>
+                <button class="animated-btn" data-action="resume">View My Resume</button>
+                <button class="animated-btn" data-action="contact">Get In Touch</button>
+                <button class="animated-btn" data-action="home">Back to Home</button>
+            </div>
+            
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">✨</div>
+                    <p>Creative Solutions</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🚀</div>
+                    <p>Fast Performance</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🎯</div>
+                    <p>Perfect UX</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© <span id="year"></span> Your Name. All rights reserved.</p>
+    </div>
+
+    <script>
+        // Generate confetti effect & wire up navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            createConfetti();
+
+            // Animate year
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            // Personalize greeting using the visitor's name saved by the contact form
+            try {
+                const visitorName = localStorage.getItem('visitor_name');
+                if (visitorName) {
+                    const note = document.getElementById('thankYouNote');
+                    note.innerHTML = note.innerHTML.replace(
+                        'Dear Visitor,',
+                        'Dear ' + escapeHtml(visitorName) + ','
+                    );
+                    // Also personalize the subtitle headline
+                    const h2 = document.querySelector('h2');
+                    if (h2) {
+                        h2.textContent = 'For Visiting, ' + escapeHtml(visitorName);
+                    }
+                }
+            } catch (err) {
+                // localStorage may be unavailable; fall back to default greeting
+            }
+
+            // Wire up interactive buttons to actually navigate
+            document.querySelectorAll('.animated-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => { this.style.transform = 'scale(1)'; }, 200);
+
+                    const action = this.dataset.action;
+                    switch (action) {
+                        case 'projects':
+                            window.location.href = 'index.html#projects';
+                            break;
+                        case 'resume':
+                            window.location.href = 'index.html#about';
+                            break;
+                        case 'contact':
+                            window.location.href = 'index.html#contact';
+                            break;
+                        case 'home':
+                            window.location.href = 'index.html';
+                            break;
+                    }
+                });
+            });
+
+            // Simple HTML escape to prevent stored-name injection
+            function escapeHtml(str) {
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            }
+
+            // Create confetti particles
+            function createConfetti() {
+                const container = document.getElementById('confettiContainer');
+                const colors = ['#00c9ff', '#00b3e6', '#ff7e5f', '#7e5fbf', '#5fbf7e'];
+
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('star');
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                    confetti.style.opacity = Math.random() * 0.5 + 0.3;
+
+                    container.appendChild(confetti);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+{
+    "$schema": "https://app.kilo.ai/config.json",
+    "username": "Jatin",
+    "auto_collapse_reasoning": true,
+    "terminal_command_display": "expanded",
+    "code_edit_display": "expanded",
+    "hide_prompt_training_models": true,
+    "default_agent": "code",
+    "instructions": [
+        "J:/GenAI_Instructions/kilo_rules.md"
+    ],
+    "permission": {
+        "read": {
+            // THE VAULT (Hard Deny - No exceptions)
+            "**/.env*": "deny",
+            "**/*secret*": "deny",
+            "**/*.pem": "deny",
+            "**/*.key": "deny",
+            "**/settings.json": "deny",
+            "**/kilo.jsonc": "deny",
+            // AUTOMATION (Speed)
+            "**/*.py": "allow",
+            "**/*.js": "allow",
+            "**/*.html": "allow",
+            "*.env.example": "allow",
+            // THE REST
+            "*": "ask"
+        },
+        "edit": {
+            "**/.env*": "deny",
+            "**/*secret*": "deny",
+            "**/*.pem": "deny",
+            "**/*.key": "deny",
+            "**/settings.json": "deny",
+            "**/kilo.jsonc": "deny",
+            "*": "ask"
+        },
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "bash": {
+            // UNIVERSAL VAULT PROTECTOR
+            // If ANY command contains these strings, Kilo kills it immediately.
+            "* **/.env*": "deny",
+            "* **/*secret*": "deny",
+            "* **/*.pem": "deny",
+            "* **/*.key": "deny",
+            "* **/settings.json": "deny",
+            "* **/kilo.jsonc": "deny",
+            "env": "deny",
+            "printenv": "deny",
+            "cat **/.env*": "deny",
+            "cat **/*secret*": "deny",
+            "grep **/.env*": "deny",
+            // SPEED EXCEPTIONS
+            "cat *": "allow",
+            "head *": "allow",
+            "tail *": "allow",
+            "less *": "allow",
+            "ls *": "allow",
+            "tree *": "allow",
+            "pwd *": "allow",
+            "echo *": "allow",
+            "wc *": "allow",
+            "which *": "allow",
+            "type *": "allow",
+            "file *": "allow",
+            "diff *": "allow",
+            "du *": "allow",
+            "df *": "allow",
+            "date *": "allow",
+            "uname *": "allow",
+            "whoami *": "allow",
+            "man *": "allow",
+            "grep *": "allow",
+            "rg *": "allow",
+            "ag *": "allow",
+            "uniq *": "allow",
+            "cut *": "allow",
+            "tr *": "allow",
+            "jq *": "allow",
+            "git status": "allow",
+            // THE REST
+            "*>*": "ask",
+            "*": "ask"
+        },
+        // "external_directory": {
+        //   "*": "ask",
+        //   "ls": null,
+        //   "pwd": null,
+        //   "git status": null,
+        //   "cat .env": null,
+        //   "printenv": null,
+        //   "env": null
+        // },
+        "external_directory": "ask",
+        "question": "allow",
+        "webfetch": "allow",
+        "websearch": "allow",
+        "doom_loop": "ask",
+        "codesearch": "allow",
+        "*": "ask"
+    },
+    "watcher": {
+        "ignore": [
+            "**/.env*",
+            "**/*secret*",
+            "**/*.pem",
+            "**/*.key",
+            "**/.vscode/**",
+            "**/kilo.jsonc"
+        ]
+    }
+}
