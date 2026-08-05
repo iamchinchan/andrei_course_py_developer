@@ -1,4 +1,5 @@
-from flask import Flask, request, render_template, redirect, url_for
+import os
+from flask import Flask, request, render_template, redirect, url_for, abort
 
 app = Flask(__name__)
 
@@ -10,7 +11,10 @@ def home():
 
 @app.route("/<string:page_name>")
 def render_page(page_name):
-    return render_template(page_name)
+    template_path = os.path.join(app.root_path, app.template_folder, page_name)
+    if os.path.exists(template_path):
+        return render_template(page_name)
+    abort(404)
 
 
 @app.route("/submit_form", methods=["POST", "GET"])
