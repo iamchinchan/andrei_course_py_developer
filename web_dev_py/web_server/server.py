@@ -1,6 +1,11 @@
+# FLASK_APP=web_dev_py/web_server/server.py FLASK_DEBUG=1 flask run
+
 from flask import Flask, render_template, send_from_directory
 
 app = Flask(__name__)
+print(app)
+print(f"{app.name}")
+print(f"_name__ is {__name__}")
 
 
 @app.route("/")
