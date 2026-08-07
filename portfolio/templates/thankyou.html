@@ -4,445 +4,696 @@
   <meta charset="UTF-8">
   <meta content="IE=edge" http-equiv="X-UA-Compatible">
   <meta content="width=device-width,initial-scale=1" name="viewport">
-  <meta content="description" name="description">
   <meta name="google" content="notranslate" />
-  
-  <!-- Disable tap highlight on IE -->
   <meta name="msapplication-tap-highlight" content="no">
-  
   <link rel="apple-touch-icon" sizes="180x180" href="{{url_for('static',filename='assets/apple-icon-180x180.png')}}">
   <link href="{{url_for('static',filename='assets/favicon.ico')}}" rel="icon">
-  
-  <title>Thank You - Jatin's Portfolio</title>
-  
+  <title>Thank You - Jatin Goyal</title>
   <style>
-    /* CSS Reset and Base */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&family=Outfit:wght@400;700;900&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #060816;
+      --accent-1: #00f5d4;
+      --accent-2: #ff6b6b;
+      --accent-3: #4d9fff;
     }
-    
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #0f0f0f;
-      overflow-x: hidden;
-      position: relative;
-      min-height: 100vh;
-    }
-    
-    /* Animated Background */
-    .background {
-      position: fixed;
-      top: 0;
-      left: 0;
+
+    html, body {
       width: 100%;
-      height: 100%;
-      overflow: hidden;
-      z-index: -1;
+      overflow-x: hidden;
     }
-    
-    .background::before {
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--bg);
+      color: #e9eef7;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Animated Aurora Background */
+    .aurora {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      overflow: hidden;
+      background: radial-gradient(ellipse at top, #0a1230 0%, #060816 60%);
+    }
+    .aurora::before, .aurora::after {
       content: '';
       position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at center, #1a2a63, #b21f1f, #1a2a63);
-      background-size: 200% 200%;
-      animation: gradientShift 15s ease infinite;
+      width: 80vmax;
+      height: 80vmax;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.55;
+      animation: drift 25s ease-in-out infinite;
+    }
+    .aurora::before {
+      background: radial-gradient(circle, var(--accent-1), transparent 60%);
+      top: -20%;
+      left: -25%;
+    }
+    .aurora::after {
+      background: radial-gradient(circle, var(--accent-3), transparent 60%);
+      bottom: -25%;
+      right: -25%;
+      animation-delay: -12s;
+    }
+    .aurora-three {
+      position: absolute;
+      width: 60vmax;
+      height: 60vmax;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+      background: radial-gradient(circle, var(--accent-2), transparent 60%);
+      top: 35%;
+      left: 40%;
+      animation: drift 30s ease-in-out infinite reverse;
+    }
+    @keyframes drift {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(15%, -10%) scale(1.1); }
+      66% { transform: translate(-10%, 12%) scale(0.95); }
+    }
+
+    /* Star Field */
+    canvas#stars {
+      position: fixed;
+      inset: 0;
       z-index: -2;
+      pointer-events: none;
     }
-    
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+
+    /* Confetti */
+    #confetti {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      pointer-events: none;
     }
-    
-    .shape {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(10px);
-      animation: float 20s ease-in-out infinite;
-    }
-    
-    .shape-1 {
-      width: 300px;
-      height: 300px;
-      top: 10%;
-      left: 10%;
-      animation-delay: 0s;
-      animation-duration: 18s;
-    }
-    
-    .shape-2 {
-      width: 200px;
-      height: 200px;
-      top: 60%;
-      right: 15%;
-      animation-delay: 5s;
-      animation-duration: 22s;
-    }
-    
-    .shape-3 {
-      width: 400px;
-      height: 400px;
-      bottom: 10%;
-      left: 20%;
-      animation-delay: 8s;
-      animation-duration: 25s;
-    }
-    
-    .shape-4 {
-      width: 150px;
-      height: 150px;
-      top: 30%;
-      right: 10%;
-      animation-delay: 12s;
-      animation-duration: 16s;
-    }
-    
-    @keyframes float {
-      0%, 100% {
-        transform: translateY(0) rotate(0deg);
-      }
-      50% {
-        transform: translateY(-30px) rotate(180deg);
-      }
-    }
-    
-    /* Main Content */
-    .container {
-      position: relative;
-      z-index: 10;
-      max-width: 800px;
+
+    /* Page content */
+    .page {
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 20px;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      padding: 90px 24px 60px;
+    }
+
+    /* Hero */
+    .hero {
       text-align: center;
-      color: white;
-    }
-    
-    .content {
-      background: rgba(15, 15, 15, 0.7);
-      backdrop-filter: blur(20px);
-      border-radius: 24px;
-      padding: 60px 40px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-      transform: translateY(30px);
       opacity: 0;
-      animation: fadeInUp 1.2s ease-out 0.5s forwards;
+      transform: translateY(30px);
+      animation: rise 1s 0.2s forwards cubic-bezier(0.22, 1, 0.36, 1);
     }
-    
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    .icon {
-      width: 100px;
-      height: 100px;
-      margin: 0 auto 30px;
+    .checkmark-wrap {
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 24px;
       position: relative;
     }
-    
-    .checkmark-circle {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      border: 3px solid #4ade80;
-      position: relative;
-      animation: checkmarkCircle 1.5s ease-in-out;
-    }
-    
-    @keyframes checkmarkCircle {
-      0% {
-        stroke-dashoffset: 200;
-      }
-      100% {
-        stroke-dashoffset: 0;
-      }
-    }
-    
-    .checkmark {
-      width: 100px;
-      height: 100px;
+    .check-bg {
       position: absolute;
-      top: 0;
-      left: 0;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, var(--accent-1), var(--accent-3), var(--accent-2), var(--accent-1));
+      animation: spin 6s linear infinite;
+      filter: blur(0.5px);
     }
-    
-    .checkmark path {
-      stroke: #4ade80;
-      stroke-width: 4;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      animation: checkmarkDraw 0.5s ease-in-out 0.8s forwards;
+    .check-bg::after {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      background: var(--bg);
     }
-    
-    @keyframes checkmarkDraw {
-      0% {
-        stroke-dashoffset: 100;
-      }
-      100% {
-        stroke-dashoffset: 0;
-      }
+    .check-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
     }
-    
-    h1 {
-      font-size: 3.5rem;
-      font-weight: 800;
-      margin-bottom: 20px;
-      background: linear-gradient(to right, #4ade80, #60a5fa);
+    .check-svg path {
+      stroke-dasharray: 50;
+      stroke-dashoffset: 50;
+      animation: draw 0.6s 0.7s forwards ease-out;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+
+    .eyebrow {
+      display: inline-block;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 8px 18px;
+      border-radius: 100px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 24px;
+      color: var(--accent-1);
+      opacity: 0;
+      animation: rise 0.8s 0.4s forwards;
+    }
+
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.8rem, 8vw, 6.5rem);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      background: linear-gradient(120deg, #ffffff 35%, var(--accent-1) 65%, var(--accent-3));
+      background-size: 200% auto;
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: textShine 3s ease-in-out infinite;
+      animation: shine 5s ease-in-out infinite;
     }
-    
-    @keyframes textShine {
-      0% {
-        background-position: 0% 50%;
-      }
-      100% {
-        background-position: 100% 50%;
-      }
+    .gold { color: var(--accent-2); -webkit-text-fill-color: var(--accent-2); }
+
+    .ty-line {
+      font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+      color: #a3b0c6;
+      margin: 24px auto 0;
+      max-width: 640px;
+      line-height: 1.65;
+      opacity: 0;
+      animation: rise 0.8s 0.6s forwards;
     }
-    
-    .subtitle {
-      font-size: 1.25rem;
-      color: #9ca3af;
-      margin-bottom: 40px;
-      line-height: 1.6;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    
-    .buttons {
+
+    .keys {
       display: flex;
-      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin: 36px 0 0;
+    }
+    .key {
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 100px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #cdd9ec;
+      opacity: 0;
+      animation: rise 0.7s forwards;
+    }
+    .key:nth-child(1) { animation-delay: 0.7s; }
+    .key:nth-child(2) { animation-delay: 0.85s; }
+    .key:nth-child(3) { animation-delay: 1s; }
+    .key:nth-child(4) { animation-delay: 1.15s; }
+    .key .dot { color: var(--accent-1); font-weight: 800; margin-right: 6px; }
+
+    .cta {
+      display: flex;
+      gap: 14px;
       justify-content: center;
       flex-wrap: wrap;
+      margin: 44px 0 0;
+      opacity: 0;
+      animation: rise 0.8s 1.3s forwards;
     }
-    
     .btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 14px 28px;
-      font-size: 1rem;
+      gap: 9px;
+      padding: 15px 30px;
+      font-size: 0.98rem;
       font-weight: 600;
-      border-radius: 50px;
+      border-radius: 100px;
       text-decoration: none;
-      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
       position: relative;
       overflow: hidden;
-      border: none;
-      cursor: pointer;
+      color: #04130f;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+      box-shadow: 0 10px 40px -10px rgba(0, 245, 212, 0.5);
     }
-    
-    .btn-primary {
-      background: linear-gradient(135deg, #4ade80, #22c55e);
-      color: white;
-      box-shadow: 0 10px 25px rgba(74, 222, 128, 0.3);
+    .btn:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 18px 50px -10px rgba(0, 245, 212, 0.7);
+      color: #04130f;
     }
-    
-    .btn-primary:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 15px 35px rgba(74, 222, 128, 0.4);
-      background: linear-gradient(135deg, #22c55e, #16a34a);
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #e9eef7;
+      box-shadow: none;
     }
-    
-    .btn-primary:active {
-      transform: translateY(-2px);
-    }
-    
-    .btn-outline {
+    .btn-ghost:hover {
       background: rgba(255, 255, 255, 0.1);
-      color: white;
-      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.35);
+      color: #ffffff;
+      box-shadow: 0 10px 30px -10px rgba(255, 255, 255, 0.2);
     }
-    
-    .btn-outline:hover {
-      background: rgba(255, 255, 255, 0.15);
-      transform: translateY(-4px);
-      box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
-    }
-    
-    .btn-outline:active {
-      transform: translateY(-2px);
-    }
-    
-    .btn-icon {
-      width: 20px;
-      height: 20px;
-    }
-    
-    /* Responsive */
-    @media (max-width: 768px) {
-      .container {
-        padding: 15px;
-      }
-      
-      .content {
-        padding: 40px 25px;
-      }
-      
-      h1 {
-        font-size: 2.5rem;
-      }
-      
-      .subtitle {
-        font-size: 1.1rem;
-      }
-      
-      .btn {
-        padding: 12px 24px;
-        font-size: 0.9rem;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 2rem;
-      }
-      
-      .content {
-        padding: 30px 20px;
-      }
-    }
-    
-    /* Floating particles */
-    .particles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 5;
-    }
-    
-    .particle {
+    .pulse-ring {
       position: absolute;
-      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid var(--accent-2);
       border-radius: 50%;
-      animation: floatParticle linear infinite;
+      width: 130px;
+      height: 130px;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: pulse 2.5s ease-out infinite;
+      pointer-events: none;
     }
-    
-    @keyframes floatParticle {
-      0% {
-        transform: translateY(100vh) rotate(0deg);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      90% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-100px) rotate(360deg);
-        opacity: 0;
-      }
+    .pulse-ring:nth-child(3) { animation-delay: 1.25s; }
+    @keyframes pulse {
+      0% { transform: translateX(-50%) scale(0.85); opacity: 0.8; }
+      100% { transform: translateX(-50%) scale(1.9); opacity: 0; }
+    }
+
+    /* Profile card */
+    .panels { display: grid; grid-template-columns: 1fr; gap: 22px; margin-top: 70px; }
+    .panel {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 28px;
+      padding: 36px;
+      backdrop-filter: blur(20px);
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: border-color 0.4s, transform 0.4s;
+    }
+    .panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 60%;
+      height: 1px;
+      transform: translateX(-50%);
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+    }
+    .panel.reveal { animation: rise 0.9s forwards; }
+
+    .profile-card { display: flex; flex-direction: column; gap: 28px; }
+    .profile-top { display: flex; align-items: center; gap: 22px; }
+    .avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: 2.2rem;
+      color: #04130f;
+      flex-shrink: 0;
+      box-shadow: 0 12px 30px -8px rgba(0, 245, 212, 0.4);
+    }
+    .profile-text h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .profile-text .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      color: #94a3b8;
+      font-size: 0.9rem;
+    }
+    .profile-text .meta span::before { content: '• '; color: var(--accent-1); margin-right: 4px; }
+    .profile-bio {
+      color: #b8c4d6;
+      line-height: 1.75;
+      font-size: 1.02rem;
+    }
+    .profile-bio .hl { color: var(--accent-1); font-weight: 600; }
+
+    /* Stats */
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 6px; }
+    .stat {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 20px;
+      padding: 22px;
+      text-align: center;
+    }
+    .stat-figure {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: 2.1rem;
+      background: linear-gradient(120deg, var(--accent-1), var(--accent-3));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+    }
+    .stat-label {
+      margin-top: 8px;
+      font-size: 0.78rem;
+      color: #8898b3;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+
+    /* Timeline */
+    .timeline-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .timeline-title .bar {
+      width: 4px;
+      height: 22px;
+      border-radius: 4px;
+      background: linear-gradient(180deg, var(--accent-1), var(--accent-2));
+    }
+    .timeline { position: relative; padding-left: 28px; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--accent-1), rgba(77, 159, 255, 0.3));
+    }
+    .tl-item { position: relative; margin-bottom: 20px; }
+    .tl-item:last-child { margin-bottom: 0; }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -28px;
+      top: 5px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent-1);
+      box-shadow: 0 0 0 4px rgba(0, 245, 212, 0.15);
+    }
+    .tl-item h4 {
+      font-weight: 700;
+      font-size: 1.02rem;
+      color: #e9eef7;
+    }
+    .tl-item .when {
+      display: inline-block;
+      font-size: 0.74rem;
+      color: var(--accent-3);
+      font-weight: 600;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .tl-item p {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-top: 4px;
+    }
+
+    /* Skills */
+    .skills { display: flex; flex-wrap: wrap; gap: 10px; }
+    .pill {
+      padding: 9px 18px;
+      border-radius: 100px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #cdd9ec;
+      transition: all 0.3s;
+    }
+    .pill:hover {
+      transform: translateY(-2px) scale(1.05);
+      border-color: rgba(0, 245, 212, 0.4);
+      color: #ffffff;
+      background: rgba(0, 245, 212, 0.08);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 80px;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      color: #5e6e87;
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+    }
+
+    @keyframes rise {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes shine {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* Responsive */
+    @media (min-width: 820px) {
+      .panels { grid-template-columns: 1.4fr 1fr; }
+      .profile-side { grid-row: span 2; }
+      .content-side { grid-row: span 2; }
+    }
+    @media (max-width: 540px) {
+      .profile-top { flex-direction: column; text-align: center; align-items: center; }
+      .stats { grid-template-columns: 1fr; }
+      .panel { padding: 26px; }
+      .page { padding-top: 70px; }
     }
   </style>
 </head>
 <body>
-  <!-- Animated Background Shapes -->
-  <div class="background">
-    <div class="shape shape-1"></div>
-    <div class="shape shape-2"></div>
-    <div class="shape shape-3"></div>
-    <div class="shape shape-4"></div>
+  <div class="aurora">
+    <div class="aurora-three"></div>
   </div>
-  
-  <!-- Floating Particles -->
-  <div class="particles">
-    <!-- Particles will be generated by JS for better control -->
-  </div>
-  
-  <!-- Main Content -->
-  <div class="container">
-    <div class="content">
-      <div class="icon">
-        <svg class="checkmark-circle" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="45" fill="none" stroke="#4ade80" stroke-width="8"/>
-        </svg>
-        <svg class="checkmark" viewBox="0 0 100 100">
-          <path d="M30,50 L40,60 L70,30" stroke-linecap="round" stroke-linejoin="round"/>
+  <canvas id="stars"></canvas>
+  <canvas id="confetti"></canvas>
+
+  <div class="page">
+    <section class="hero">
+      <div class="checkmark-wrap">
+        <div class="pulse-ring"></div>
+        <div class="pulse-ring"></div>
+        <div class="check-bg"></div>
+        <svg class="check-svg" viewBox="0 0 100 100">
+          <path d="M28 52 L44 67 L73 35" fill="none" stroke="#00f5d4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
-      <h1>Message Sent!</h1>
-      <p class="subtitle">
-        Thank you for reaching out! Your message has been successfully delivered and I'll get back to you shortly.
+      <span class="eyebrow">Message Delivered</span>
+      <h1>Thank You<span class="gold">.</span><br>Let's Build<br>Something Great</h1>
+      <p class="ty-line">
+        Your message has landed safely in my inbox. I read every word personally and respond to each one with care &mdash; expect a thoughtful reply from me soon. In the meantime, take a look around while I prepare your response.
       </p>
-      <div class="buttons">
-        <a href="{{ url_for('render_page', page_name='index.html') }}" class="btn btn-primary">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 12L11 18M5 12L11 6M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Back to Home
-        </a>
-        <a href="{{ url_for('render_page', page_name='works.html') }}" class="btn btn-outline">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 4v16m8-8H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          View Works
-        </a>
+      <div class="keys">
+        <span class="key"><span class="dot">●</span>Fast Response</span>
+        <span class="key"><span class="dot">●</span>Quality Craftsmanship</span>
+        <span class="key"><span class="dot">●</span>Clean Code</span>
+        <span class="key"><span class="dot">●</span>Persistent Learner</span>
+      </div>
+      <div class="cta">
+        <a href="{{ url_for('render_page', page_name='index.html') }}" class="btn">Back to Home</a>
+        <a href="{{ url_for('render_page', page_name='works.html') }}" class="btn btn-ghost">View Works</a>
+      </div>
+    </section>
+
+    <div class="panels">
+      <div class="panel profile-card profile-side reveal">
+        <div class="profile-top">
+          <div class="avatar">JG</div>
+          <div class="profile-text">
+            <h3>Jatin Goyal</h3>
+            <div class="meta">
+              <span>Python Developer</span>
+              <span>Flask Enthusiast</span>
+              <span>Always Learning</span>
+            </div>
+          </div>
+        </div>
+        <p class="profile-bio">
+          A passionate learner on a journey to master <span class="hl">Python</span> and build real,
+          meaningful software. Currently crafting full-stack web experiences with
+          <span class="hl">Flask</span>, securing dynamic routes with Jinja templates, and preparing
+          for the next leap into <span class="hl">Machine Learning</span> and data-driven applications.
+        </p>
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-figure">2+</div>
+            <div class="stat-label">Learning Phases</div>
+          </div>
+          <div class="stat">
+            <div class="stat-figure">10+</div>
+            <div class="stat-label">Templates Built</div>
+          </div>
+          <div class="stat">
+            <div class="stat-figure">∞</div>
+            <div class="stat-label">Curiosity</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel content-side reveal">
+        <div class="timeline-title"><span class="bar"></span>The Next Chapter</div>
+        <div class="timeline">
+          <div class="tl-item">
+            <span class="when">Phase Two · Now</span>
+            <h4>Web Scraping & Automation</h4>
+            <p>Extending Python beyond Flask into data extraction with BeautifulSoup and Selenium.</p>
+          </div>
+          <div class="tl-item">
+            <span class="when">Phase Two · Next</span>
+            <h4>Advanced Scripting</h4>
+            <p>Mastering decorators, generators, OOP design patterns, and error-handling strategies.</p>
+          </div>
+          <div class="tl-item">
+            <span class="when">Phase Two · Ahead</span>
+            <h4>Machine Learning</h4>
+            <p>Exploring Pandas, NumPy, and scikit-learn to build data-driven intelligence.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel reveal">
+        <div class="timeline-title"><span class="bar"></span>Skills in Motion</div>
+        <div class="skills">
+          <span class="pill">Python</span>
+          <span class="pill">Flask</span>
+          <span class="pill">Jinja2</span>
+          <span class="pill">HTML5</span>
+          <span class="pill">CSS3</span>
+          <span class="pill">JavaScript</span>
+          <span class="pill">Git</span>
+          <span class="pill">Bootstrap</span>
+          <span class="pill">REST APIs</span>
+          <span class="pill">Responsive Design</span>
+        </div>
       </div>
     </div>
+
+    <footer class="footer">
+      CRAFTED WITH FLASK · JINJA2 · PURE CSS ANIMATIONS &nbsp;·&nbsp; JATIN GOYAL
+    </footer>
   </div>
-  
-  <!-- Existing Scripts -->
+
   <script>
-    document.addEventListener("DOMContentLoaded", function (event) {
-      navActivePage();
+    /* Starfield on canvas */
+    (function() {
+      const canvas = document.getElementById('stars');
+      const ctx = canvas.getContext('2d');
+      let w, h, stars;
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+        const count = Math.floor((w * h) / 9000);
+        stars = Array.from({length: count}, () => ({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 1.4 + 0.3,
+          a: Math.random(),
+          s: Math.random() * 0.02 + 0.005
+        }));
+      }
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        for (const s of stars) {
+          s.a += s.s;
+          const alpha = 0.4 + Math.sin(s.a) * 0.4;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255,255,255,${Math.max(0.05, alpha)})`;
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+      window.addEventListener('resize', resize);
+      resize();
+      draw();
+    })();
+
+    /* Confetti burst on load */
+    (function() {
+      const canvas = document.getElementById('confetti');
+      const ctx = canvas.getContext('2d');
+      let W = canvas.width = window.innerWidth;
+      let H = canvas.height = window.innerHeight;
+      const colors = ['#00f5d4', '#4d9fff', '#ff6b6b', '#ffd166', '#ffffff'];
+      let particles = [];
+      function spawn() {
+        const cx = W / 2, cy = window.innerHeight * 0.35;
+        for (let i = 0; i < 140; i++) {
+          particles.push({
+            x: cx, y: cy,
+            vx: (Math.random() - 0.5) * 16,
+            vy: Math.random() * -14 - 4,
+            g: 0.35,
+            size: Math.random() * 7 + 4,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            rot: Math.random() * 360,
+            vr: (Math.random() - 0.5) * 12,
+            life: 1
+          });
+        }
+      }
+      function step() {
+        ctx.clearRect(0, 0, W, H);
+        let alive = false;
+        for (const p of particles) {
+          p.vy += p.g;
+          p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+          p.life -= 0.008;
+          if (p.life > 0) {
+            alive = true;
+            ctx.save();
+            ctx.globalAlpha = Math.max(0, p.life);
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.rot * Math.PI) / 180);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.5);
+            ctx.restore();
+          }
+        }
+        particles = particles.filter(p => p.life > 0 && p.y < H + 40);
+        if (alive) requestAnimationFrame(step);
+        else ctx.clearRect(0, 0, W, H);
+      }
+      window.addEventListener('resize', () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; });
+      setTimeout(() => { spawn(); step(); }, 600);
+    })();
+
+    /* Reveal panels on scroll */
+    (function() {
+      const panels = document.querySelectorAll('.panel');
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry, i) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.style.animationDelay = '0s';
+              entry.target.classList.add('reveal');
+            }, i * 120);
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      panels.forEach(p => { p.style.opacity = '0'; io.observe(p); });
+    })();
+
+    document.addEventListener("DOMContentLoaded", function () {
+      try { navActivePage(); } catch (e) {}
     });
   </script>
-  
-  <!-- Generate Particles -->
-  <script>
-    // Generate floating particles
-    function createParticles() {
-      const particlesContainer = document.querySelector('.particles');
-      const particleCount = 30;
-      
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        
-        // Random size
-        const size = Math.random() * 6 + 2; // 2-8px
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        
-        // Random starting position
-        particle.style.left = `${Math.random() * 100}%`;
-        
-        // Random animation duration and delay
-        const duration = Math.random() * 10 + 5; // 5-15s
-        const delay = Math.random() * 5; // 0-5s delay
-        particle.style.animationDuration = `${duration}s`;
-        particle.style.animationDelay = `${delay}s`;
-        
-        particlesContainer.appendChild(particle);
-      }
-    }
-    
-    // Create particles on load
-    createParticles();
-  </script>
-  
-  <script type="text/javascript" src="{{url_for('static', filename='main.70a66962.js')}}"></script>
 </body>
 </html>
