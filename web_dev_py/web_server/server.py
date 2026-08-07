@@ -1,11 +1,11 @@
 # FLASK_APP=web_dev_py/web_server/server.py FLASK_DEBUG=1 flask run
 
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template, send_from_directory, url_for
 
 app = Flask(__name__)
 print(app)
 print(f"{app.name}")
-print(f"_name__ is {__name__}")
+print(f"__name__ is {__name__}")
 
 
 @app.route("/")
@@ -15,7 +15,7 @@ def home():
 
 @app.route("/<username>/<int:post_id>")
 def post(username=None, post_id=None):
-    return render_template("index.html", name=username, post_id=post_id)
+    return render_template("user_post.html", name=username, post_id=post_id)
 
 
 @app.route("/blog")
@@ -28,9 +28,22 @@ def favicon():
     return "😀"
 
 
-@app.route("/about")
+# @app.route("/about")
+# def about():
+#     return render_template("about.html")
+
+
+@app.route("/bio")
 def about():
     return render_template("about.html")
+
+
+@app.route("/test_url")
+def test_url():
+    # Demonstrating url_for for static files and routes
+    static_url = url_for("static", filename="style.css")
+    about_url = url_for("about")
+    return f"Static File URL: {static_url} <br> About Route URL: {about_url}"
 
 
 @app.route("/company/about")
