@@ -1,10 +1,12 @@
+# FLASK_APP=portfolio/server.py FLASK_DEBUG=1 flask run
+
 import os
 from flask import Flask, request, render_template, redirect, url_for, abort
 
 app = Flask(__name__)
 
 
-@app.route("/")
+@app.route("/", methods=["GET"])
 def home():
     return render_template("index.html")
 
