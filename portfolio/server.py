@@ -1,6 +1,7 @@
 # FLASK_APP=portfolio/server.py FLASK_DEBUG=1 flask run
 
 import os
+import csv
 from flask import Flask, request, render_template, redirect, url_for, abort
 
 app = Flask(__name__)
@@ -36,12 +37,33 @@ def write_to_database(data):
     return name or "Visitor"
 
 
+def write_to_database_csv(data):
+    csv_path = os.path.join(app.root_path, "database.csv")
+    file_exists = os.path.exists(csv_path) and os.path.getsize(csv_path) > 0
+
+    name = data.get("name", "").strip()
+    email = data.get("email", "")
+    subject = data.get("subject", "")
+    message = data.get("message", "")
+
+    with open(csv_path, mode="a", newline="", encoding="utf-8") as csv_file:
+        writer = csv.writer(
+            csv_file, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL
+        )
+        if not file_exists:
+            writer.writerow(["Name", "Email", "Subject", "Message"])
+        writer.writerow([name, email, subject, message])
+
+    return name or "Visitor"
+
+
 @app.route("/submit_form", methods=["POST", "GET"])
 def submit_form():
     if request.method == "POST":
         try:
             data = request.form.to_dict()
-            name = write_to_database(data)
+            # name = write_to_database(data)
+            name = write_to_database_csv(data)
             print(data)
             return redirect(
                 url_for("render_page", page_name="thankyou.html", name=name)
