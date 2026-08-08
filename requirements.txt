@@ -1,0 +1,124 @@
+aiohappyeyeballs==2.6.2
+aiohttp==3.14.1
+aiohttp-retry==2.9.1
+aiosignal==1.4.0
+annotated-types==0.7.0
+anyio @ file:///C:/Users/task_177313442937352/croot/anyio_1773134524846/work
+argon2-cffi @ file:///C:/Users/task_176606707648210/croot/argon2-cffi_1766067890970/work
+argon2-cffi-bindings @ file:///C:/Users/dev-admin/buildout/croot/argon2-cffi-bindings_1761980525516/work
+asttokens==3.0.1
+async-lru @ file:///C:/Users/dev-admin/buildout/croot/async-lru_1761940529245/work
+atproto==0.0.68
+attrs @ file:///C:/Users/task_177495968090263/croot/attrs_1774959752963/work
+babel @ file:///C:/miniconda3/conda-bld/babel_1764159343831/work
+beautifulsoup4 @ file:///C:/Users/task_177029174485644/croot/beautifulsoup4-split_1770291849065/work
+bleach @ file:///C:/Users/task_177754500711872/croot/bleach_1777545118926/work
+blinker==1.9.0
+brotlicffi @ file:///C:/miniconda3/conda-bld/brotlicffi_1764961392766/work
+certifi @ file:///C:/Users/task_177937043427751/croot/certifi_1779370630351/work/certifi
+cffi @ file:///C:/miniconda3/conda-bld/cffi_1761832793693/work
+charset-normalizer @ file:///C:/miniconda3/conda-bld/charset-normalizer_1761744988796/work
+click==8.4.1
+colorama==0.4.6
+comm==0.2.3
+cryptography==46.0.7
+debugpy==1.8.20
+decorator==5.3.1
+defusedxml @ file:///tmp/build/80754af9/defusedxml_1615228127516/work
+dnspython==2.8.0
+dotenv==0.9.9
+executing==2.2.1
+fastjsonschema @ file:///C:/miniconda3/conda-bld/python-fastjsonschema_1763718678445/work
+Flask==3.1.3
+frozenlist==1.8.0
+googletrans==4.0.2
+h11 @ file:///C:/miniconda3/conda-bld/h11_1761931280691/work
+h2==4.3.0
+hpack==4.1.0
+html5lib @ file:///Users/ktietz/demo/mc3/conda-bld/html5lib_1629144453894/work
+httpcore @ file:///C:/Users/dev-admin/buildout/croot/httpcore_1761939678908/work
+httpx @ file:///C:/Users/dev-admin/buildout/croot/httpx_1761941099328/work
+hyperframe==6.1.0
+idna @ file:///C:/Users/dev-admin/buildout/croot/idna_1762551230734/work
+ipykernel==7.2.0
+ipython==9.13.0
+ipython_pygments_lexers==1.1.1
+itsdangerous==2.2.0
+jedi==0.20.0
+Jinja2 @ file:///C:/Users/dev-admin/buildout/croot/jinja2_1761938590194/work
+json5 @ file:///C:/miniconda3/conda-bld/json5_1763718615838/work
+jsonschema @ file:///C:/Users/task_176795547555139/croot/jsonschema_1767955583625/work
+jsonschema-specifications @ file:///C:/miniconda3/conda-bld/jsonschema-specifications_1762788613712/work
+jupyter-events @ file:///C:/Users/task_177806710271725/croot/jupyter_events_1778067286064/work
+jupyter-lsp @ file:///C:/Users/task_176977265702222/croot/jupyter-lsp_1769772765816/work
+jupyter_client==8.8.0
+jupyter_core==5.9.1
+jupyter_server @ file:///C:/Users/task_177920384273075/croot/jupyter_server_1779204008458/work
+jupyter_server_terminals @ file:///C:/Users/task_177028943868542/croot/jupyter_server_terminals_1770289598732/work
+jupyterlab @ file:///C:/Users/task_177825296039741/croot/jupyterlab_1778253059376/work
+jupyterlab_pygments @ file:///C:/Users/dev-admin/buildout/croot/jupyterlab_pygments_1759955874975/work
+jupyterlab_server @ file:///C:/Users/task_176962933081313/croot/jupyterlab_server_1769629913304/work
+libipld==3.4.1
+lxml==6.1.1
+MarkupSafe @ file:///C:/Users/dev-admin/buildout/croot/markupsafe_1759955189290/work
+matplotlib-inline==0.2.2
+mistune @ file:///C:/Users/dev-admin/buildout/croot/mistune_1759955904576/work
+multidict==6.7.1
+nbclient @ file:///C:/Users/task_177157717311710/croot/nbclient_1771577295307/work
+nbconvert @ file:///C:/Users/task_177212127228850/croot/nbconvert-meta_1772121334358/work
+nbformat @ file:///C:/Users/dev-admin/buildout/croot/nbformat_1759955312591/work
+nest-asyncio==1.6.0
+notebook @ file:///C:/Users/task_177513867248953/croot/notebook_1775139393313/work
+notebook_shim @ file:///C:/Users/task_176962940553730/croot/notebook-shim_1769629901712/work
+numpy==2.5.1
+packaging==26.0
+pandocfilters @ file:///C:/Users/dev-admin/buildout/croot/pandocfilters_1759955985207/work
+parso==0.8.7
+pillow==12.2.0
+platformdirs==4.9.6
+prometheus_client @ file:///C:/Users/task_177273262320601/croot/prometheus_client_1772733416381/work
+prompt_toolkit==3.0.52
+propcache==0.5.2
+psutil==7.2.2
+pure_eval==0.2.3
+pycparser @ file:///C:/Users/task_177495971781166/croot/pycparser_1774959830167/work
+pydantic==2.13.4
+pydantic_core==2.46.4
+Pygments==2.20.0
+pyjokes==0.8.3
+PyJWT==2.13.0
+pypdf==6.13.1
+PySocks @ file:///C:/miniconda3/conda-bld/pysocks_1761753029698/work
+python-dateutil==2.9.0.post0
+python-dotenv==1.2.2
+python-json-logger @ file:///C:/miniconda3/conda-bld/python-json-logger_1764590137051/work
+pywin32 @ file:///C:/Users/dev-admin/buildout/croot/pywin32_1759953972432/work
+pywinpty @ file:///C:/Users/task_177521346807667/croot/pywinpty_1775213566011/work/pywinpty-src
+PyYAML @ file:///C:/miniconda3/conda-bld/pyyaml_1763465514484/work
+pyzmq==27.1.0
+referencing @ file:///C:/miniconda3/conda-bld/referencing_1762536906066/work
+requests @ file:///C:/Users/task_177506611932238/croot/requests_1775066190807/work
+rfc3339_validator @ file:///C:/miniconda3/conda-bld/rfc3339-validator_1764775658359/work
+rfc3986_validator @ file:///C:/Users/dev-admin/buildout/croot/rfc3986-validator_1762547083442/work
+rpds-py @ file:///C:/miniconda3/conda-bld/rpds-py_1762366636411/work
+Send2Trash @ file:///C:/Users/task_176817069691338/croot/send2trash_1768170819395/work
+setuptools==82.0.1
+six==1.17.0
+soupsieve @ file:///C:/Users/dev-admin/buildout/croot/soupsieve_1761938454850/work
+stack-data==0.6.3
+terminado @ file:///C:/Users/task_176959127836768/croot/terminado_1769591780553/work
+tinycss2 @ file:///C:/miniconda3/conda-bld/tinycss2_1764949110306/work
+tk==0.1.0
+tornado==6.5.5
+traitlets==5.15.0
+twilio==9.10.9
+typing-inspection==0.4.2
+typing_extensions @ file:///C:/Users/dev-admin/buildout/croot/typing_extensions_1759955056205/work
+urllib3 @ file:///C:/Users/task_177853593283653/croot/urllib3_1778536216915/work
+wcwidth==0.7.0
+webencodings @ file:///C:/Users/dev-admin/buildout/croot/webencodings_1761938483125/work
+websocket-client @ file:///C:/Users/dev-admin/buildout/croot/websocket-client_1759957369455/work
+websockets==15.0.1
+Werkzeug==3.1.8
+win_inet_pton @ file:///C:/miniconda3/conda-bld/win_inet_pton_1761746275387/work
+yarl==1.24.2
