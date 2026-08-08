@@ -22,9 +22,13 @@ def render_page(page_name):
 @app.route("/submit_form", methods=["POST", "GET"])
 def submit_form():
     if request.method == "POST":
-        data = request.form.to_dict()
-        print(data)
-        # return render_template("thankyou.html")
-        return redirect(url_for("render_page", page_name="thankyou.html"))
+        try:
+            data = request.form.to_dict()
+            name = data.get("name", "Friend")
+            print(data)
+            return redirect(url_for("render_page", page_name="thankyou.html", name=name))
+        except Exception as err:
+            print(f"Error saving to database: {err}")
+            return "Did not save to database"
     else:
         return "Something went wrong. Please try again."
