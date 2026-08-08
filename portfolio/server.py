@@ -19,14 +19,33 @@ def render_page(page_name):
     abort(404)
 
 
+def write_to_database(data):
+    db_path = os.path.join(app.root_path, "database.txt")
+    file_exists = os.path.exists(db_path) and os.path.getsize(db_path) > 0
+
+    with open(db_path, mode="a", encoding="utf-8") as database:
+        if not file_exists:
+            database.write("Name,Email,Subject,Message\n")
+
+        name = data.get("name", "").strip()
+        email = data.get("email", "")
+        subject = data.get("subject", "")
+        message = data.get("message", "")
+        database.write(f'"{name}","{email}","{subject}","{message}"\n')
+
+    return name or "Visitor"
+
+
 @app.route("/submit_form", methods=["POST", "GET"])
 def submit_form():
     if request.method == "POST":
         try:
             data = request.form.to_dict()
-            name = data.get("name", "Friend")
+            name = write_to_database(data)
             print(data)
-            return redirect(url_for("render_page", page_name="thankyou.html", name=name))
+            return redirect(
+                url_for("render_page", page_name="thankyou.html", name=name)
+            )
         except Exception as err:
             print(f"Error saving to database: {err}")
             return "Did not save to database"
